@@ -1,0 +1,196 @@
+1. origin input performance:
+
+MLPRegressor error is 0.389267
+decision tree error is 0.488609
+RandomForest error is 0.364212
+Adaboost error is 0.390343
+XGBoost error is 0.415539
+lightgbm error is 0.410083
+Gradient Decision Tree error is 0.420924
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.412128
+logistic bagging error is 0.412128
+tree bagging error is 0.362774
+knn bagging error is 0.403077
+Dummy bagging error is 0.392797
+
+2. PCA 
+(1) PCA dimensions
+n_components 	dimension
+0.99	1
+0.999	2
+0.9999	3
+0.99999	5
+0.999999	6
+
+With one dimension, we can get 99% information of the table.
+
+(2) PCA effect
+1 dimension results(n_components=0.99)
+MLPRegressor error is 0.392971
+decision tree error is 0.529888
+RandomForest error is 0.432878
+Adaboost error is 0.379952
+XGBoost error is 0.415539
+lightgbm error is 0.420924
+Gradient Decision Tree error is 0.415539
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.407807
+tree bagging error is 0.456106
+knn bagging error is 0.396971
+Dummy bagging error is 0.392803
+
+2 dimension results(n_components=0.999)
+MLPRegressor error is 0.393786
+decision tree error is 0.512604
+RandomForest error is 0.396730
+Adaboost error is 0.389156
+XGBoost error is 0.429750
+lightgbm error is 0.420924
+Gradient Decision Tree error is 0.420924
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.420424
+tree bagging error is 0.396444
+knn bagging error is 0.410383
+Dummy bagging error is 0.392806
+
+6 dimension results(n_components=0.999999)
+MLPRegressor error is 0.392712
+decision tree error is 0.508191
+RandomForest error is 0.368719
+Adaboost error is 0.379328
+XGBoost error is 0.424476
+lightgbm error is 0.410083
+Gradient Decision Tree error is 0.417342
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.411910
+tree bagging error is 0.369229
+knn bagging error is 0.401375
+Dummy bagging error is 0.392796
+
+12 dimension(n_components=12)
+MLPRegressor error is 0.393358
+decision tree error is 0.497743
+RandomForest error is 0.371217
+Adaboost error is 0.409322
+XGBoost error is 0.408248
+lightgbm error is 0.406405
+Gradient Decision Tree error is 0.415539
+Logistic Regression error is 0.560191
+Dummy Regression error is 0.392797
+KNN error is 0.412128
+tree bagging error is 0.372268
+knn bagging error is 0.401908
+Dummy bagging error is 0.392793
+
+3. normalize with np.linalg.norm() 
+(1) axis=0
+MLPRegressor error is 4.286718
+decision tree error is 0.433229
+RandomForest error is 0.433229
+Adaboost error is 0.433196
+XGBoost error is 0.433229
+lightgbm error is 0.433229
+Gradient Decision Tree error is 0.433229
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.430238
+tree bagging error is 0.433229
+knn bagging error is 0.430364
+Dummy bagging error is 0.392799
+(2) axis=1
+MLPRegressor error is 0.391095
+decision tree error is 0.488609
+RandomForest error is 0.364205
+Adaboost error is 0.376082
+XGBoost error is 0.415539
+lightgbm error is 0.420924
+Gradient Decision Tree error is 0.413728
+Logistic Regression error is 0.434959
+Dummy Regression error is 0.392797
+KNN error is 0.412784
+tree bagging error is 0.361982
+knn bagging error is 0.405568
+Dummy bagging error is 0.392791
+
+4. optimization
+
+(1)tree bagging
+first optimize tree.decisionTree's parameteres
+optimze decision tree error is 0.419137
+best parameters {'criterion': 'gini', 'max_depth': 8, 'min_samples_leaf': 5, 'splitter': 'random'}
+local optimized
+
+so choose to optimize tree bagging
+step 1
+n_estimators
+step 2
+max_samples
+max_features
+step 3
+After step2, n_estimators
+
+n_estimators = [10, 50, 100, 150, 200]
+best parameters {'n_estimators': 200}
+
+max_samples = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+optimize tree bagging error is 0.353870
+best parameters {'max_features': 0.9, 'max_samples': 0.5}
+
+n_estimators = [10, 50, 100, 150, 200]
+optimize tree bagging error is 0.353732
+best parameters {'n_estimators': 200}
+
+so change n_estimators range
+
+n_estimators = [150, 200, 250]
+optimize tree bagging error is 0.353033
+best parameters {'n_estimators': 250}
+
+n_estimators = 500
+optimize tree bagging error is 0.353000
+almost the same
+
+model = BaggingRegressor(base_estimator=tree, n_estimators=500, max_samples=0.5,  max_features=0.9, bootstrap=True)
+
+(2) RandomForestRegressor
+choose to optimize RandomForestClassifier
+step1:
+n_estimators
+step2:
+max_depth
+step3:
+max_leaf_nodes
+step4:
+min_samples_split
+
+origin RandomForest error is 0.424476
+
+n_estimators
+n_estimators = range(10, 200, 10)
+optimze RandomForest error is 0.360495
+best parameters {'n_estimators': 190}
+
+max_depth
+max_depth = range(5, 21)
+optimze RandomForest error is 0.356870
+best parameters {'max_depth': 15}
+
+max_leaf_nodes
+max_leaf_nodes = range(100, 1000, 100)
+optimze RandomForest error is 0.353475
+best parameters {'max_leaf_nodes': 900}
+
+min_samples_split
+min_samples_split = range(2, 52, 2)
+optimze RandomForest error is 0.353875
+best parameters {'min_samples_split': 22}
+but less accurate
+not accept
+
+model = RandomForestRegressor(n_estimators=190, max_depth=15, max_leaf_nodes=900)
+
